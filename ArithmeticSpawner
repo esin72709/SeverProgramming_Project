@@ -1,0 +1,56 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ArithmeticSpawner : MonoBehaviour
+{
+    public GameObject problemPrefab;
+    public float spawnInterval = 2f;
+    public Transform spawnAreaTopLeft;
+    public Transform spawnAreaTopRight;
+
+    private float timer = 0f;
+    public List<ProblemObject> activeProblems = new List<ProblemObject>();
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer >= spawnInterval)
+        {
+            SpawnProblemObjects();
+            timer = 0f;
+        }
+    }
+
+    void SpawnProblemObjects()
+    {
+        int numberOfObjects = Random.Range(1, 4); // 1~3개 생성
+        for (int i = 0; i < numberOfObjects; i++)
+        {
+            float xPos = Random.Range(spawnAreaTopLeft.position.x, spawnAreaTopRight.position.x);
+            Vector3 spawnPos = new Vector3(xPos, spawnAreaTopLeft.position.y, 0);
+            GameObject obj = Instantiate(problemPrefab, spawnPos, Quaternion.identity);
+            ProblemObject po = obj.GetComponent<ProblemObject>();
+            po.GenerateProblem();
+            activeProblems.Add(po);
+        }
+    }
+
+    public bool CheckAnswer(int userAnswer)
+    {
+        for (int i = activeProblems.Count - 1; i >= 0; i--)
+        {
+            if (activeProblems[i] == null) // 이미 파괴된 오브젝트
+            {
+                activeProblems.RemoveAt(i);
+                continue;
+            }
+            if (activeProblems[i].answer == userAnswer)
+            {
+                Destroy(activeProblems[i].gameObject);
+                activeProblems.RemoveAt(i);
+                return true; // 정답 처리
+            }
+        }
+        return false; // 오답 처리
+    }
+}
