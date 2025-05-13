@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>떨어지는 숫자를 맞춰라!</title>
+  <meta name="viewport" content="width=900, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f9f8fe;
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-container {
+      position: relative;
+      width: 900px;
+      height: 650px;
+      background: #F8F6FF;
+      border-radius: 32px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 숫자 캐릭터 위치 */
+    .number-char {
+      position: absolute;
+      width: 65px;
+      height: auto;
+      z-index: 2;
+      user-select: none;
+      transition: transform 0.15s; /* 흔들림 효과 부드럽게 */
+    }
+
+    .number-7 { top: 50px; left: 50px;  transform: rotate(-15deg);}
+    .number-8 { top: 60px; right: 50px;  transform: rotate(18deg);}
+    .number-1 { left: 60px; bottom: 30px;  transform: rotate(-8deg);}
+    .number-2 { right: 70px; bottom: 130px;  transform: rotate(12deg);}
+
+    /* 숫자 캐릭터 흔들림 효과 */
+    .number-char:hover {
+      animation: shake 0.5s;
+      animation-iteration-count: 1;
+    }
+
+    /* 흔들림 keyframes */
+    @keyframes shake {
+      0% { transform: translateX(0) rotate(var(--base-rotate, 0deg)); }
+      15% { transform: translateX(-5px) rotate(calc(var(--base-rotate, 0deg) - 5deg)); }
+      30% { transform: translateX(5px) rotate(calc(var(--base-rotate, 0deg) + 5deg)); }
+      45% { transform: translateX(-4px) rotate(calc(var(--base-rotate, 0deg) - 4deg)); }
+      60% { transform: translateX(4px) rotate(calc(var(--base-rotate, 0deg) + 4deg)); }
+      75% { transform: translateX(-2px) rotate(calc(var(--base-rotate, 0deg) - 2deg)); }
+      90% { transform: translateX(2px) rotate(calc(var(--base-rotate, 0deg) + 2deg)); }
+      100% { transform: translateX(0) rotate(var(--base-rotate, 0deg)); }
+    }
+
+    /* 각 숫자에 맞는 회전값을 CSS 변수로 지정 */
+    .number-7 { --base-rotate: -15deg; }
+    .number-8 { --base-rotate: 18deg; }
+    .number-1 { --base-rotate: -8deg; }
+    .number-2 { --base-rotate: 12deg; }
+
+    /* 타이틀 이미지 */
+    .game-title-img {
+      position: absolute;
+      top: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      max-width: 90vw;
+      z-index: 3;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* 게임시작 버튼 이미지 */
+    .start-btn-img {
+      position: absolute;
+      top: 430px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      max-width: 80vw;
+      z-index: 3;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.2s;
+      user-select: none;
+    }
+    .start-btn-img:hover {
+      filter: brightness(1.09);
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    /* 땅/잔디 */
+    .ground-img {
+      position: absolute;
+      left: 0;
+      bottom: -13px; /* 기존 -15px에서 -5px로 변경 */
+      width: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 반응형 */
+    @media (max-width: 950px) {
+      .game-container { width: 99vw; height: 70vw; max-width: 99vw; max-height: 80vw; }
+      .game-title-img { width: 90vw; }
+      .start-btn-img { width: 70vw; }
+      .number-char { width: 11vw; }
+    }
+    @media (max-width: 600px) {
+      .game-container { height: 95vw; }
+      .game-title-img { top: 15vw; }
+      .start-btn-img { top: 45vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <!-- 숫자 캐릭터들 -->
+    <img src="img/num7.png" class="number-char number-7" alt="7">
+    <img src="img/num8.png" class="number-char number-8" alt="8">
+    <img src="img/num1.png" class="number-char number-1" alt="1">
+    <img src="img/num2.png" class="number-char number-2" alt="2">
+
+    <!-- 중앙 타이틀 (이미지) -->
+    <img src="img/title.png" class="game-title-img" alt="떨어지는 숫자를 맞춰라!">
+
+    <!-- 게임시작 버튼 (이미지) -->
+    <img src="img/start.png" class="start-btn-img" alt="게임시작" id="start-btn">
+
+    <!-- 땅/잔디 -->
+    <img src="img/ground.png" class="ground-img" alt="잔디">
+  </div>
+  <script>
+    document.getElementById('start-btn').onclick = function() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
