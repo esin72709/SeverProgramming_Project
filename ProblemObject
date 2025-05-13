@@ -1,0 +1,47 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ProblemObject : MonoBehaviour
+{
+    public Text problemText;
+    public int answer;
+    public float fallSpeed = 2f;
+
+    public void GenerateProblem()
+    {
+        int a = Random.Range(1, 10);
+        int b = Random.Range(1, 10);
+        int op = Random.Range(0, 4); // 0:+, 1:-, 2:*, 3:/
+        switch (op)
+        {
+            case 0:
+                answer = a + b;
+                problemText.text = a + " + " + b;
+                break;
+            case 1:
+                answer = a - b;
+                problemText.text = a + " - " + b;
+                break;
+            case 2:
+                answer = a * b;
+                problemText.text = a + " × " + b;
+                break;
+            case 3:
+                int product = a * b;
+                answer = product / b;
+                problemText.text = product + " ÷ " + b;
+                break;
+        }
+    }
+
+    void Update()
+    {
+        transform.Translate(Vector2.down * fallSpeed * Time.deltaTime);
+
+        // 화면 아래로 벗어나면 파괴
+        if (transform.position.y < -6f)
+        {
+            Destroy(gameObject);
+        }
+    }
+}
